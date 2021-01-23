@@ -28,7 +28,8 @@
     "commit": "git-cz"
   },
   "bin": {
-    "gue": "src/bin.js"
+    "gue": "src/bin.js",
+    "vue-gen": "src/bin.js"
   },
   "dependencies": {
     "boxen": "^4.1.0",
