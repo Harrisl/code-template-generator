@@ -1,0 +1,24 @@
+<template>
+	<div>
+		<!-- {/* Do stuff */} -->
+	</div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue';
+export default Vue.extend({
+  name: 'YourComponentName',
+
+  props: {},
+
+  data:() => ({}),
+
+  computed: {},
+
+  methods: {}
+});
+</script>
+
+<style>
+//ImportYourCSS
+</style>
