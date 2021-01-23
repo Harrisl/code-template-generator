@@ -1,11 +1,17 @@
-.vs
-.vscode
-.idea
+# Node build artifacts
+node_modules
+npm-debug.log
+doc
+.nyc_output
+
+# Local development
+*.env
+*.dev
 .DS_Store
 
-node_modules
-package-lock.json
+# Docker
+Dockerfile
+docker-compose.yml
 
-# Test prefix
-_Test*
-_test*
+# File Manager(dolphin)
+.directory

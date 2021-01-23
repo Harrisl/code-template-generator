@@ -1,194 +1,148 @@
-# code-template-generator
-[![Node.js version](https://img.shields.io/node/v/code-template-generator.svg?style=flat)](https://nodejs.org)   [![code-template-generator](https://img.shields.io/npm/v/code-template-generator.svg?style=flat)](https://www.npmjs.com/package/code-template-generator/)
 
-## Table of contents
-1. [Introduction](#1-introduction)
-2. [Main features](#2-main-features)
-    * [Project templates](#21-project-templates)
-    * [Component templates](#22-component-templates)
-    * [Asset generation](#23-asset-generation)
-3. [Installation](#3-installation)
-4. [Usage](#4-usage)
-    * [Options](#41-options)
-    * [Sub options](#42-sub-options)
-    * [Aliases](#43-aliases)
-5. [Examples](#5-examples)
-6. [Thanks you!](#6-thank-you)
+# Gue   [![Build Status](https://travis-ci.org/hosein2398/gue.svg?branch=master)](https://travis-ci.org/hosein2398/gue) [![Coverage Status](https://coveralls.io/repos/github/hosein2398/gue/badge.svg?branch=master&kill_cache=1)](https://coveralls.io/github/hosein2398/gue?branch=master)
 
-(*) [Tips and tricks for the project templates](https://github.com/nguyenkhois/build-environments/blob/master/HOWTO.md)
 
-## 1. Introduction
-You like to build yourself development environment and install only what you need in your project. You want to know how it works and have more controll as much as possible. Sometimes you just want to have a little tool to show an idea. The application gives you a step on your way and it makes your life more exciting. (^_~)
 
-The application is a lightweight Node.js CLI tool that is using for front-end web development with  [React](https://reactjs.org/). Main features:
-* Project generation that has a part of the [Build environments](https://github.com/nguyenkhois/build-environments) project.
-* Component generation.
-* Asset generation that is useful when you want using your own project template or config files etc.
+> Vue js component generator
 
-### Screenshot
-![Screenshot](https://raw.githubusercontent.com/nguyenkhois/code-template-generator/master/assets/screenshot.gif)
+<p align="center">
+<img width="430" src="./logo.png">
+</p>
 
-## 2. Main features
-* Project template generation
-    * Two alternative for Git support during the generation:
-        * Without Git support _(default)_.
-        * With Git support by running the `git init` command and generation of a `.gitignore` file while the project is generated from a chosen template.
-    * [Project templates](https://github.com/nguyenkhois/build-environments):
-        * It's simple for configuration and installation of only dependencies you need.
-            * Fast and flexible.
-            * Only the minimum needed dependencies are installed and preconfigured.
-            * Easy to change to _(or from)_ another build environment.
-            * Compatibility with another projects that are generated from [create-react-app](https://facebook.github.io/create-react-app/).
-        * Code splitting.
-        * Image handling.
-        * Minification for production.
-        * CSS, JS code injected automatic into the HTML template `/src/index.html`.
-        * Hot Module Replacement (HMR) is enabled.
-        * You don't need to care about the distribution directory `/dist`. The things you care are only the directory `/src`.
-        * Anti-caching.
-* React component generation can be:
-    * A single React component that is a JavaScript file _(*.js, *.jsx, *.ts, *.tsx)_.
-    * A full React component that is a directory with two files are within: a CSS file and a JS file _(*.js, *.jsx, *.tsx)_.
-* Asset generation - You can retrieve your own assets _(project templates, component templates, config files for ESLint, Webpack etc.)_ from a directory on local.
-* `.gitignore` file generation.
-* Automatic update checking for the latest stable version that is found on npmjs.com.
+## Demo
+<p align="center">
+  <img src="./preview.gif">
+</p>
 
-### 2.1 Project templates
-|Templates|Main dependencies|
-|---|---|
-|react-hooks|React Hooks, Babel |
-|react-sass|React Hooks, Babel and SASS |
-|react-typescript|React Hooks, TypeScript, ts-loader|
 
-You can view more details and other project templates in the repository [Build environments](https://github.com/nguyenkhois/build-environments).
+Features
+* 📜 Generate Vue component
+* 🧰 Generate test file for the component 
+* ⚙️ Dynamic path for component
+* 📁 Configurable root directory for components and tests
+* 📝 Custom templates for components and test
+## Installing
+> Note that this package is published under name of `vue-gue`
+```
+npm i -g vue-gue
+```
 
-### 2.2 Component templates
-|Component|Single (*)|Full (**)|Description|
-|---|:---:|:---:|---|
-|Plain JavaScript|*.js|*.css, *.js|Can using *.jsx|
-|TypeScript|*.tsx|*.css, *.tsx||
+## Getting started
+Head over to root of your project in terminal, say you want to create a component named `footer`:
+```
+gue footer
+```
+This will generate `footer` component in `./src/components/footer.vue`
+#### Change directory of component
+You can define a directory which you want your component to be generated in.
+```
+gue tab ./menu
+```
+This will generate `tab` component in `./menu/tab.vue`
+> Consider behavior of directory parameter when you have a config file and you don't. [details](#usage)  
+> For a consistent way to change root directory of components see  [config](#config-file).
 
-_(*) Single component is a JavaScript file with these supported extensions: *.js, *.jsx, *.ts and *.tsx._
+#### Generate test file
+Now if you want a component and also it's corresponding unit test file you can do:
+```
+gue footer -u
+```
+This will generate `footer` component in `./src/components/footer.vue` and also a test file in `./tests/unit/footer.js`
+> To change any of these directories see [config](#config-file)
+## Usage
+General usage is like:
+```
+$ gue --help
 
-_(**) Full component is a directory with two files are within: a CSS file and a JS file (*.js, *.jsx, *.tsx)._
+  Usage: gue <componentName> [direcroty] [options]
 
-### 2.3 Asset generation
-You can retrieve your own assets from a directory on local.
+  Options:
+    -u, --unit             create unit test of the component too
+    -t, --template <name>  define which template to use
+    -h, --help             output usage information
 
-Reasons:
-* You may have your own project templates, code templates, libraries and many more _(.gitignore, .editorconfig, .eslinttrc.json, .eslintignore, webpack.config.js ect)_.
-* You don't want to do the same things as search-copy-paste the assets many times while you are coding or starting a new project.
+```
+* &lt;componentName&gt; is mandatory.
+* [directory] is optional, and is a relative path.
+  If you have a config file this will be a `subdirectory` of your [componentRoot](#options)
+  If you don't, then this will lead to generation of component in exact `direcroty` 
+* [options] are optional, available options are `-u` which will generate test file, and `-t` which is used to define which template for components to use.
 
-![Asset generation](https://raw.githubusercontent.com/nguyenkhois/code-template-generator/master/assets/userasset.gif)
+## Config file
+Gue accepts a config file to change default settings. In root directory of project make a file `gue.json`, and Gue will automatically recognize and use it.
+#### Options
+Here are available options for config file:
+* `componentRoot`: root directory which components will be generated in. should be relative path.
+* `componentSource`: path to custom component template. Or an object to define [multiple templates](#using-multiple-custom-templates).
+* `unitRoot`:  directory which test  will be generated in. should be a relative path.
+* `unitSource`: path to custom test file template.
 
-_(You can view [how to use](#4-usage) and the [examples](#5-examples) are below for more details)_
+An example of a config file with all options:
+```json
+{
+  "componentRoot":"./front-end/src/components",
+  "unitRoot":"./front-end/test",
+  "componentSource":"./myTemplates/myVueTemplate.vue",
+  "unitSource":"./myTemplates/myTestTemplate.js"
+}
+```
+Now if you run gue to create a `clock` component in your project, it'll generate it in `./front-end/src/components/clock.vue`. 
+If you run following command in the same project:
+```
+gue title ./header
+```
+Will generate `./front-end/src/components/header/title.vue`
 
-## 3. Installation
-`$ npm install --global code-template-generator`
+#### Custom templates
+As said you can use custom templates in Gue, define path to them with `componentSource` and `unitSource` so that Gue will use them instead of it's default ones.
+##### Variables
+In your component template you can use variable `<%NAME%>` and Gue will replace it with name of component when generating.
+And also in test template you use `<%NAME%>` and `<%PATH%>` which will be replaced with path where component is located, relative to path of test file.
+Here is an example of custom component template:
+```
+<template>
+  <div class="app">
+    Hey I'm a component generated with Gue, my name is <%NAME%>
+  </div>
+</template>
 
-System requirements:
-* The minimum supported Node.js version is __8.9.0__ _(Node.js LTS version is a good choice for the stability)_.
-* Administrator permission is required by your operating system for these things:
-    * Installation of `code-template-generator` on global by using the option `--global`.
-    * Running the command `generate --update` for the latest stable version updating.
-
-## 4. Usage
-`$ generate [-option] [--sub-option] [project-name][component-name][path]`
-
-__Tip!__ You can use the command `gen` instead of `generate` from version 2.2.x. It's more quickly when you enter a command line.
-
-Examples:
-
-* `generate -v` -> Main command.
-* `gen -v` -> Short command.
-
-### 4.1 Options
-| Option | Used with | Description |
-|:---:|:---:|---|
-| - | `<project-name>` |  Generate a new project from a chosen template __without__ Git support. |
-|`-g`|`<project-name>`| Run automatically the `git init` command and generate a `.gitignore` file on the root of project directory during the generation.|
-|`-c`|`<component-name>.<extension>`|Generate a __single__ React component in the current directory _(*.js, *.jsx, *.ts, *.tsx)_.|
-|`-f`|`<component-name>`|Generate a __full__ React component in the current directory _(*.js, *.jsx, *.tsx)_.|
-|`-i`|-| A `.gitignore` file will be generated in the current directory. |
-|`-v`|-|View the installed version.|
-|`-help`|-|View help documentation.|
-|`-u`|-| Automatic update checking and installation for the latest stable version. (*) |
-|`-cf`| (**) |Using with one of these sub options: `--set-asset`, `--view-asset`.|
-|`-a`|-|Show a list to retrieve chosen asset(s) into the current work directory.|
-
-(*) Administrator permission is required by your operating system. Here are the examples for MacOS and Ubuntu systems by using `sudo`:
-* `$ sudo generate -u`
-* `$ sudo generate --update` _(Using alias)_
-
-(**) View how to use with its sub options that are below.
-
-### 4.2 Sub options
-* `--no-install` _(No install dependencies)_
-* `--set-asset` _(Set a local path to the asset directory)_
-* `--view-asset` _(View the current local path to the asset directory)_
-* `--jsx` _(Using *.jsx instead of *.js)_
-* `--tsx` _(Using *.tsx instead of *.js)_
-
-|Option|Sub option|Used with|Description|
-|:---:|:---:|:---:|---|
-|-|`--no-install`|`<project-name>`|Generate a project __without__ both running the `git init` command and installation of dependencies.|
-|`-g`|`--no-install`|`<project-name>`|Generate a project with running the `git init` command but __without__ installation of dependencies.|
-|`-cf`|`--set-asset`|`<local-path>`|Store a local path to the asset directory into the application config file.|
-|`-cf`|`--view-asset`|-|View the current asset path.|
-|`-f`|`--jsx`|`<component-name>`|The application creates a `*.jsx` file instead of a `*.js` file that is default when it generates a full component.|
-|`-f`|`--tsx`|`<component-name>`|The application creates a `*.tsx` file instead of a `*.js` file that is default when it generates a full component.|
-
-### 4.3 Aliases
-|Option|Alias|
-|:---:|:---|
-|`-g`|`--git`|
-|`-c`|`--component`|
-|`-f`|`--full-component`|
-|`-i`|`--gitignore`|
-|`-v`|`--version`|
-|`-help`|`--help`|
-|`-u`|`--update`|
-|`-cf`|`--config`|
-|`-a`|`--asset`|
-
-## 5. Examples
-
-````
-// Project generation
-$ generate first-project   // Generates a project without any options
-
-$ generate -g secondproject   // With Git support by running 'git init'
-$ generate --git ThirdProject   // Using alias --git instead of -g
-$ generate -g --no-install OtherProject
-$ generate --no-install LastProject  // No install dependencies
-
-// Single component -> A JavaScript file
-$ generate -c SearchService.js
-$ generate -c ReviewComponent.jsx
-$ generate -c CountService.ts
-$ generate -c CounterComponent.tsx
-
-// Full component
-// -> A directory with two files are within (*.css, *.js|jsx|tsx)
-$ generate -f Product         // Default is using *.js
-$ generate -f --jsx Cart      // Using *.jsx
-$ generate -f --tsx Counter   // Using *.tsx
-
-// Asset generation
-$ generate -cf --set-asset "C:\Users\name\myassets"  // Windows
-$ generate -cf --set-asset "/Users/name/myassets"    // MacOS
-$ generate -cf --set-asset "/home/name/myassets"     // Ubuntu
-$ generate -cf --view-asset   // View info about the current asset location
-$ generate -a                 // Show the asset list and retrieve them
-
-// Others
-$ generate -i      // Generate a .gitignore file
-$ generate -v      // View the installed version
-$ generate -help   // View help documentation
-$ generate -u      // Install the latest stable version
-````
-
-## 6. Thank you!
-Special thanks to [Harriet Ryder](https://medium.com/northcoders/creating-a-project-generator-with-node-29e13b3cd309)!
-
-Many thanks to [Commander.js](https://github.com/tj/commander.js) for the inspiration.
+export default {
+name: "<%NAME%>",
+data() {
+  return {
+    someData: "a sample"
+  }
+}
+<style scoped>
+</style>
+```
+To see other examples look at [templates folder](https://github.com/hosein2398/gue/tree/master/src/templates).
+##### Using multiple custom templates
+You can use multiple custom templates. So `componentSource` can be object (multiple templates) or a string (single template). Multiple templates can be created like:
+```json
+{
+  "componentSource": {
+    "component"  :  "./tmps/component.vue",
+    "page"  :  "./tmps/page.vue"
+  }
+}
+```
+And when using Gue you have to tell it which component template to use:
+```
+gue menu -t component
+gue setting ./pages -t page
+```
+You can define one of your templates as `default` one, so that you don't have to type `-t` every time. Default component can be specified with `:default` postfix:
+```json
+{
+  "componentSource": {
+    "component:default"  :  "./tmps/component.vue",
+    "page"  :  "./tmps/page.vue"
+  }
+}
+```
+Now if you type any command without `-t`, component template will be used.
+```
+gue foo 
+```
+Will use `component` template to generate foo component. No need of `-t component`
